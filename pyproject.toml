@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unitree_robotics"
+version = "1.0.0"
+description = "Unified Unitree robotics suite for teleoperation, training, and deployment"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Unitree Robotics" }
+]
+keywords = ["unitree", "robotics", "teleoperation", "imitation-learning", "lerobot"]
+
+dependencies = [
+    # Core dependencies
+    "numpy==1.26.4",
+    "matplotlib>=3.7.5",
+    "meshcat==0.3.2",
+    "logging_mp",
+    "opencv-python>=4.8.0",
+    "pyyaml>=6.0",
+    
+    # Robotics (pinocchio installed via conda)
+    # pinocchio==3.1.0
+    "torch==2.3.0",
+    
+    # Teleoperation
+    "rerun-sdk==0.20.1",
+    "sshkeyboard==2.3.1",
+    "vuer[all]==0.0.60",
+    
+    # Training & Deployment
+    "transformers>=4.45.2",
+    "tyro>=0.9.10",
+    
+    # Image streaming
+    "pyzmq",
+    "aiohttp",
+    "aiortc",
+    "av",
+    
+    # Dex retargeting
+    "pytransform3d>=3.5.0",
+    "pin>=2.7.0",
+    "nlopt>=2.6.1,<2.8.0",
+    "trimesh>=4.4.0",
+    "anytree>=2.12.0",
+    "lxml>=5.2.2",
+    
+    # OAK-D camera
+    "depthai",
+]
+
+[project.optional-dependencies]
+# Teleoperation extras (XR, image streaming)
+teleop = [
+    "rerun-sdk==0.20.1",
+    "sshkeyboard==2.3.1",
+]
+
+# Training extras (deep learning)
+training = [
+    "torch>=2.0.0",
+    "transformers>=4.45.2",
+    "datasets",
+    "huggingface_hub",
+]
+
+# Full installation
+all = [
+    "unitree_robotics[teleop,training]",
+]
+
+[tool.setuptools]
+packages = ["teleop", "deployment", "training", "utils"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = ["build", "venv", "__pycache__", "assets"]
+fix = true
+show-fixes = true
+
+[tool.ruff.lint.per-file-ignores]
+"constants.py" = ["N815"]
+
+[tool.bandit]
+exclude_dirs = []
+skips = ["B101", "B311", "B404", "B603", "B615"]

@@ -1,0 +1,22 @@
+# Robot PC Requirements - RealSense Camera
+# Install on the robot's onboard PC for image streaming with RealSense cameras
+
+# Camera driver
+pyrealsense2
+
+# Core dependencies
+numpy==1.26.4
+opencv-python>=4.8.0
+pyyaml>=6.0
+
+# Image streaming
+pyzmq
+aiohttp
+aiortc
+av
+
+# Utilities
+logging_mp
+
+# After installing these, install teleimager from this repo:
+# pip install -e ./teleop/teleimager --no-deps

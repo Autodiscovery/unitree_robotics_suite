@@ -1,0 +1,24 @@
+name: unitree_training
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pinocchio=3.1.0
+  - numpy=1.26.4
+  - ffmpeg=7.1.1
+  
+  # Install via pip
+  - pip
+  - pip:
+      # Core utilities
+      - meshcat==0.3.2
+      - logging_mp
+      - transformers>=4.45.2
+      
+      # LeRobot will be installed separately with:
+      # cd training/lerobot && pip install -e .
+      # This installs ~200+ dependencies including torch, etc.
+      
+      # Unitree SDK2 (for robot replay/testing)
+      # pip install git+https://github.com/unitreerobotics/unitree_sdk2_python.git

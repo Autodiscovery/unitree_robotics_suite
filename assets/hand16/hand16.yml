@@ -1,0 +1,25 @@
+left:
+  type: vector
+  urdf_path: inspire_hand/inspire_hand_left.urdf
+  wrist_link_name: "L_hand_base_link"
+  
+  target_joint_names: null
+  target_origin_link_names: ["L_hand_base_link", "L_hand_base_link", "L_hand_base_link", "L_hand_base_link", "L_hand_base_link"]
+  target_task_link_names: ["L_thumb_tip", "L_index_tip", "L_middle_tip", "L_ring_tip", "L_pinky_tip"]
+  target_link_human_indices: [[0, 0, 0, 0, 0], [4, 9, 14, 19, 24]]
+  
+  scaling_factor: 1.5
+  low_pass_alpha: 0.8
+
+right:
+  type: vector
+  urdf_path: inspire_hand/inspire_hand_right.urdf
+  wrist_link_name: "R_hand_base_link"
+  
+  target_joint_names: null
+  target_origin_link_names: ["R_hand_base_link", "R_hand_base_link", "R_hand_base_link", "R_hand_base_link", "R_hand_base_link"]
+  target_task_link_names: ["R_thumb_tip", "R_index_tip", "R_middle_tip", "R_ring_tip", "R_pinky_tip"]
+  target_link_human_indices: [[0, 0, 0, 0, 0], [4, 9, 14, 19, 24]]
+  
+  scaling_factor: 1.5
+  low_pass_alpha: 0.8

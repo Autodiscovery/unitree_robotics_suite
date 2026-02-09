@@ -1,0 +1,48 @@
+name: unitree_teleop
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pinocchio=3.1.0
+  - numpy=1.26.4
+  - matplotlib>=3.7.5
+  - opencv
+  - pyyaml>=6.0
+  
+  # Install via pip
+  - pip
+  - pip:
+      # Core robotics
+      - torch==2.3.0
+      - meshcat==0.3.2
+      - logging_mp
+      
+      # Teleoperation
+      - vuer[all]==0.0.60
+      - rerun-sdk==0.20.1
+      - sshkeyboard==2.3.1
+      
+      # Image streaming
+      - pyzmq
+      - aiohttp
+      - aiortc
+      - av
+      
+      # Dex retargeting dependencies
+      - pytransform3d>=3.5.0
+      - pin>=2.7.0
+      - nlopt>=2.6.1,<2.8.0
+      - trimesh>=4.4.0
+      - anytree>=2.12.0
+      - lxml>=5.2.2
+      
+      # Deployment
+      - transformers>=4.45.2
+      - tyro>=0.9.10
+      
+      # OAK-D camera (optional, for development)
+      - depthai
+      
+      # Unitree SDK2 (install separately after environment creation)
+      # pip install git+https://github.com/unitreerobotics/unitree_sdk2_python.git

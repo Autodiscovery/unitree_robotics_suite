@@ -1,0 +1,46 @@
+# DEPRECATED: Use environment_teleop.yml or environment_training.yml instead
+#
+# This file is kept for reference only. The repository now uses separate
+# environments for different purposes:
+#
+# - environment_teleop.yml: For teleoperation and deployment
+# - environment_training.yml: For training with LeRobot
+#
+# See README.md for detailed installation instructions.
+
+name: unitree_robotics_deprecated
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy>=1.24.0
+  - matplotlib>=3.7.5
+  - opencv
+  - pyyaml
+  - ffmpeg
+  
+  # PyTorch (adjust for your CUDA version)
+  - pytorch>=2.0.0
+  - torchvision
+  - pytorch-cuda=11.8  # or 12.1 depending on your GPU
+  
+  - pip:
+      - meshcat==0.3.2
+      - logging_mp
+      - pinocchio>=2.6.0
+      - rerun-sdk==0.20.1
+      - sshkeyboard==2.3.1
+      - transformers>=4.45.2
+      - tyro>=0.9.10
+      - pyzmq
+      - aiohttp
+      - aiortc
+      - av
+      - depthai
+      - datasets
+      - huggingface_hub
+      # Install unitree_sdk2py separately:
+      # pip install git+https://github.com/unitreerobotics/unitree_sdk2_python.git@master
