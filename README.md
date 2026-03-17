@@ -22,7 +22,6 @@ This repository integrates:
   - [5. Autonomous Execution](#5-autonomous-execution)
 - [Supported Hardware](#supported-hardware)
 - [Troubleshooting](#troubleshooting)
-- [License](#license)
 
 ---
 
