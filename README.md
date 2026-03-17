@@ -29,7 +29,7 @@ This repository integrates:
 ## ✨ Features
 
 ### Teleoperation
-- **XR-based control** via Meta Quest, Apple Vision Pro, or browser
+- **XR-based control** via Meta Quest 3, Apple Vision Pro, or Pico 4 Ultra Enterprise
 - **Multi-robot support**: G1 (29/23 DOF), H1, H1_2
 - **Hand controllers**: Dex1, Dex3, Inspire (FTP/DFX), BrainCo, HAND16
 - **Real-time visualization** with Rerun
@@ -107,7 +107,7 @@ unitree_robotics/
 - **Hardware**:
   - Real robot: Unitree G1/H1/H1_2 (optional, can be sim)
   - Cameras: OAK-D or RealSense (optional for image streaming)
-  - XR Device: Meta Quest, Apple Vision Pro, or Pico 4 Ultra Enterprise
+  - XR Device: Meta Quest 3, Apple Vision Pro, or Pico 4 Ultra Enterprise
 
 ### Installation Path 1: Teleoperation + Deployment
 
@@ -182,14 +182,14 @@ python -m teleimager.image_server  # Use standard server for RealSense
 
 #### SSL Certificates for XR Devices
 
-For Meta Quest / Apple Vision Pro / Pico to connect securely:
+For Meta Quest 3/ Apple Vision Pro / Pico to connect securely:
 
 ```bash
 cd teleop/televuer
 
 # Generate certificates (choose based on your XR device)
 
-# For Meta Quest / PICO
+# For Meta Quest 3/ PICO
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem
 
 # For Apple Vision Pro (requires special setup)
@@ -339,11 +339,11 @@ python utils/convert_unitree_json_to_lerobot.py \
 - `--robot_type`: Type of robot used, matching `ROBOT_CONFIGS` (e.g., `Unitree_G1_Dex3`, `Unitree_H1`, etc.)
 
 ```bash
-# Train policy with LeRobot
+# Train policy with LeRobot (see Workflows > Policy Training for all policy types)
 cd training/lerobot
 python src/lerobot/scripts/lerobot_train.py \
     --dataset.repo_id=your_name/open_door_dataset \
-    --policy.type=diffusion \
+    --policy.type=act \
     --policy.push_to_hub=false
 ```
 
@@ -417,31 +417,78 @@ python utils/convert_unitree_json_to_lerobot.py \
 
 ### 3. Policy Training
 
-#### Train with LeRobot
+> [!NOTE]
+> The training commands and parameters below are derived from the [official Unitree LeRobot training guide](https://github.com/unitreerobotics/unitree_IL_lerobot) and the [LeRobot documentation](https://github.com/huggingface/lerobot/tree/main/docs/source). Full credit goes to **Unitree Robotics** and **HuggingFace LeRobot**.
+
+Replace `--dataset.repo_id` with your own dataset (e.g. `your_name/my_dataset`). The examples below use the public Unitree demo dataset.
 
 ```bash
 cd training/lerobot
+```
 
-# ACT Policy
-python src/lerobot/scripts/lerobot_train.py \
-    --dataset.repo_id=your_name/dataset \
-    --policy.type=act \
-    --policy.push_to_hub=false
+#### ACT Policy
+> 📖 See [act.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/act.mdx) for full parameter details.
 
-# Diffusion Policy (Recommended)
+```bash
 python src/lerobot/scripts/lerobot_train.py \
-    --dataset.repo_id=your_name/dataset \
-    --policy.type=diffusion \
-    --policy.push_to_hub=false
+    --dataset.repo_id=unitreerobotics/G1_Dex3_ToastedBread_Dataset \
+    --policy.push_to_hub=false \
+    --policy.type=act
+```
 
-# Pi0.5 (Vision-Language-Action)
+#### Diffusion Policy
+> 📖 See [policy_diffusion_README.md](https://github.com/huggingface/lerobot/blob/main/docs/source/policy_diffusion_README.md) for full parameter details.
+
+```bash
 python src/lerobot/scripts/lerobot_train.py \
-    --dataset.repo_id=your_name/dataset \
+    --dataset.repo_id=unitreerobotics/G1_Dex3_ToastedBread_Dataset \
+    --policy.push_to_hub=false \
+    --policy.type=diffusion
+```
+
+#### Pi0 Policy
+> 📖 See [pi0.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/pi0.mdx) for full parameter details.
+
+```bash
+python src/lerobot/scripts/lerobot_train.py \
+    --dataset.repo_id=unitreerobotics/G1_Dex3_ToastedBread_Dataset \
+    --policy.push_to_hub=false \
+    --policy.type=pi0
+```
+
+#### Pi0.5 Policy (Vision-Language-Action)
+> 📖 See [pi05.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/pi05.mdx) for full parameter details.
+
+```bash
+python src/lerobot/scripts/lerobot_train.py \
+    --dataset.repo_id=unitreerobotics/G1_Dex3_ToastedBread_Dataset \
     --policy.type=pi05 \
+    --output_dir=./outputs/pi05_training \
+    --job_name=pi05_training \
+    --policy.pretrained_path=lerobot/pi05_base \
+    --policy.compile_model=true \
+    --policy.gradient_checkpointing=true \
+    --policy.dtype=bfloat16 \
+    --policy.device=cuda \
     --policy.push_to_hub=false
 ```
 
-**Multi-GPU Training:**
+#### GR00T Policy
+> 📖 See [groot.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/groot.mdx) for full parameter details.
+
+```bash
+python src/lerobot/scripts/lerobot_train.py \
+    --dataset.repo_id=unitreerobotics/G1_Dex3_ToastedBread_Dataset \
+    --output_dir=./outputs/groot_training \
+    --policy.push_to_hub=false \
+    --policy.type=groot \
+    --policy.tune_diffusion_model=false \
+    --job_name=groot_training
+```
+
+#### Multi-GPU Training
+> 📖 See [multi_gpu_training.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/multi_gpu_training.mdx) for full details.
+
 ```bash
 torchrun --nproc_per_node=4 src/lerobot/scripts/lerobot_train.py \
     --dataset.repo_id=your_name/dataset \
@@ -536,10 +583,9 @@ cd scripts
 - **USB Webcams**
 
 ### XR Devices
-- **Meta Quest 2/3/Pro**
+- **Meta Quest 3**
 - **Apple Vision Pro**
 - **Pico 4 Ultra Enterprise**
-- **Browser-based** (WebXR)
 
 ---
 
@@ -585,22 +631,16 @@ python -m teleimager.oak_d_server
 
 # NaN loss
 # Reduce learning rate or check data normalization
+
+# logging-mp import errors / API incompatibility
+# The codebase requires logging-mp==0.1.6 — later versions changed the API
+# pip install logging-mp==0.1.6
 ```
-
----
-
-## 📄 License
-
-This project is licensed under the Apache License 2.0.
-
-Portions of this codebase are derived from:
-- [xr_teleoperate](https://github.com/unitreerobotics/xr_teleoperate) (Unitree Robotics)
-- [Unitree LeRobot](https://github.com/unitreerobotics/unitree_IL_lerobot) (Unitree Robotics)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **Unitree Robotics**
-- **HuggingFace** for the LeRobot framework
-- **Pinocchio** for inverse kinematics
+- **[Unitree Robotics](https://github.com/unitreerobotics)** — for [xr_teleoperate](https://github.com/unitreerobotics/xr_teleoperate), [unitree_IL_lerobot](https://github.com/unitreerobotics/unitree_IL_lerobot), and their [official training documentation](https://github.com/unitreerobotics/unitree_IL_lerobot) which the training commands in this README are based on
+- **[HuggingFace LeRobot](https://github.com/huggingface/lerobot)** — for the LeRobot training framework and policy implementations (ACT, Diffusion, Pi0, Pi0.5, GR00T)
+- **[Pinocchio](https://github.com/stack-of-tasks/pinocchio)** for inverse kinematics

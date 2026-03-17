@@ -16,7 +16,7 @@ dependencies:
       # Core robotics
       - torch==2.3.0
       - meshcat==0.3.2
-      - logging_mp
+      - logging-mp==0.1.6
       
       # Teleoperation
       - vuer[all]==0.0.60

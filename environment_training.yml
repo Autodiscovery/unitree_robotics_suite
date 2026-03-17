@@ -13,7 +13,7 @@ dependencies:
   - pip:
       # Core utilities
       - meshcat==0.3.2
-      - logging_mp
+      - logging-mp==0.1.6
       - transformers>=4.45.2
       
       # LeRobot will be installed separately with:
