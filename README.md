@@ -136,9 +136,10 @@ pip install -e ./teleop/televuer
 pip install -e ./teleop/robot_control/dex-retargeting
 
 # Install Unitree SDK2 (COMPULSORY for real robot)
-pip install git+https://github.com/unitreerobotics/unitree_sdk2_python.git
+git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
 
 # Install main package
+cd unitree_sdk2_python
 pip install -e .
 
 ```
