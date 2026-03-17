@@ -255,13 +255,55 @@ pip install -e .
 
 #### Model-Specific Environments
 
-Some models may require separate environments:
+Some models require extra dependencies on top of the base LeRobot install (`pip install -e .` from `training/lerobot`).
 
-**PI-0.5 / GR00T Environment:** (Create when needed)
+---
+
+##### Pi0 (`policy.type=pi0`)
+> 📖 [pi0.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/pi0.mdx)
+
 ```bash
-# Will be documented when implementing these models
-# Different transformers/torch versions may be required
+cd training/lerobot
+pip install -e ".[pi]"
 ```
+
+---
+
+##### Pi0.5 (`policy.type=pi05`)
+> 📖 [pi05.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/pi05.mdx)
+
+```bash
+cd training/lerobot
+pip install -e ".[pi]"
+```
+
+---
+
+##### GR00T N1.5 (`policy.type=groot`)
+> 📖 [groot.mdx](https://github.com/huggingface/lerobot/blob/main/docs/source/groot.mdx)
+
+GR00T requires **Flash Attention** and a CUDA-enabled GPU. Install in order:
+
+```bash
+# 1. Install compatible torch (check https://pytorch.org/get-started/locally/ for your CUDA version)
+pip install "torch>=2.2.1,<2.8.0" "torchvision>=0.21.0,<0.23.0"
+
+# 2. Install Flash Attention build dependencies
+pip install ninja "packaging>=24.2,<26.0"
+
+# 3. Install Flash Attention (takes several minutes to compile)
+pip install "flash-attn>=2.5.9,<3.0.0" --no-build-isolation
+
+# 4. Verify
+python -c "import flash_attn; print(f'Flash Attention {flash_attn.__version__} OK')"
+
+# 5. Install LeRobot with GR00T extras
+cd training/lerobot
+pip install lerobot[groot]
+```
+
+> [!WARNING]
+> Do **not** install `lerobot` before Flash Attention — GR00T requires flash attention to be present first.
 
 ---
 
